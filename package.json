@@ -1,0 +1,26 @@
+{
+  "name": "informer",
+  "version": "1.0.0",
+  "description": "Display simple notifications in the browser.",
+  "main": "informer.js",
+  "scripts": {
+    "lint": "eslint informer.js || echo [sudo] npm i -g eslint",
+    "dist": "uglifyjs informer.js -o informer.min.js || echo [sudo] npm i -g uglify-js",
+    "docs": "jsdoc informer.js -d docs || echo [sudo] npm i -g jsdoc",
+    "test": "wget https://raw.githubusercontent.com/luileito/asserter/master/asserter.js && echo 'Now open test.html'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luileito/informer.git"
+  },
+  "keywords": [
+    "notification",
+    "message"
+  ],
+  "author": "Luis Leiva",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luileito/informer/issues"
+  },
+  "homepage": "https://github.com/luileito/informer#readme"
+}

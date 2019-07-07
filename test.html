@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="asserter.js"></script>
+    <script src="informer.js"></script>
+    <!-- DOM ready test -->
+    <script>
+    (function() {
+
+      var notification = new Informer();
+      asserter
+      .test('should not show').that(notification.show).throws()
+      .run('DOM not ready');
+
+    })();
+    </script>
+  </head>
+  <body>
+    <div class="global">
+      <p>Notification examples</p>
+      <ul>
+        <li><a id="default" href="#">Default settings</a></li>
+        <li><a id="bottomRight" href="#">At bottom right corner</a></li>
+        <li><a id="topRight" href="#">At top right corner</a></li>
+        <li><a id="topLeft" href="#">At top left corner</a></li>
+        <li><a id="cantClose" href="#">Can't close</a></li>
+        <li><a id="withDelay" href="#">Closes after some delay</a></li>
+        <li><a id="customStyle" href="#">Custom style</a></li>
+      </ul>
+      BEGIN SAMPLE CONTENT
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      ... some scrolling ...
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      <br><br><br><br><br><br>
+      END SAMPLE CONTENT
+    </div>
+
+    <script>
+    (function() {
+
+      // We'll use a singleton for all these tests.
+      var notification = new Informer();
+
+      document.getElementById('default').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('Hi there!');
+
+        asserter
+        .test('has close button').that(notification.element.querySelector('a')).exists()
+        .test('has no top style').that(notification.element.style.top).not().exists()
+        .test('has no right style').that(notification.element.style.right).not().exists()
+        .test('has bottom style').that(notification.element.style.bottom).exists()
+        .test('has left style').that(notification.element.style.left).exists()
+        .run('Test defaults');
+      });
+
+      document.getElementById('bottomRight').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('Hi there!', {
+          pos: 'bottom-right',
+        });
+
+        asserter
+        .test('has no top style').that(notification.element.style.top).not().exists()
+        .test('has right style').that(notification.element.style.right).exists()
+        .test('has bottom style').that(notification.element.style.bottom).exists()
+        .test('has no left style').that(notification.element.style.left).not().exists()
+        .run('Test bottomRight');
+      });
+
+      document.getElementById('topRight').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('Hi there!', {
+          pos: 'top-right',
+        });
+
+        asserter
+        .test('has top style').that(notification.element.style.top).exists()
+        .test('has right style').that(notification.element.style.right).exists()
+        .test('has no bottom style').that(notification.element.style.bottom).not().exists()
+        .test('has no left style').that(notification.element.style.left).not().exists()
+        .run('Test topRight');
+      });
+
+      document.getElementById('topLeft').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('Hi there!', {
+          pos: 'top-left',
+        });
+
+        asserter
+        .test('has top style').that(notification.element.style.top).exists()
+        .test('has no right style').that(notification.element.style.right).not().exists()
+        .test('has no bottom style').that(notification.element.style.bottom).not().exists()
+        .test('has left style').that(notification.element.style.left).exists()
+        .run('Test topLeft');
+      });
+
+      document.getElementById('cantClose').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('You can\'t close me', {
+          close: false,
+        });
+
+        asserter
+        .test('has no close button').that(notification.element.querySelector('a')).not().exists()
+        .run('Test cantClose');
+      });
+
+      document.getElementById('withDelay').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('Will hide in 2 seconds', {
+          close: false,
+          delay: 2000,
+          on: {
+            hide: function() {
+              asserter
+              .test('elem not shown').that(notification.element.style.display).is('none')
+              .run('Test withDelay');
+            },
+          },
+        });
+
+      });
+
+      document.getElementById('customStyle').addEventListener('click', function(ev) {
+        ev.preventDefault();
+
+        notification.show('This is custom style', {
+          css: {
+            background: 'skyblue',
+            color: 'black',
+            border: '1px solid black',
+            // Actually, any CSS property can be applied here.
+            borderRadius: '5px',
+            boxShadow: '5px 5px 15px #888',
+          }
+        });
+
+        asserter
+        .test('has background').that(notification.element.style.background).is('skyblue')
+        .test('has color').that(notification.element.style.color).is('black')
+        .test('has border').that(notification.element.style.border).is('1px solid black')
+        .run('Test customStyle');
+      });
+
+    })();
+    </script>
+
+  </body>
+</html>
