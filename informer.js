@@ -55,7 +55,7 @@
         show: function() {},
         hide: function() {},
         reset: function() {},
-      }
+      },
     };
     /**
      * Current configuration.
@@ -84,7 +84,7 @@
       if (isNew) {
         // Create element.
         self.element = document.createElement('div');
-        self.element.id = id || 'informer-' +  Date.now();
+        self.element.id = id || 'informer-' + Date.now();
       }
 
       // Force DIV content to be left-aligned, since the close button will be displayed at the right.
@@ -120,7 +120,7 @@
       // Exit early if DOM isn't ready yet.
       if (!self.element) return self;
       // Style element.
-      for (var prop in self.options.css) {
+      for (var prop in self.options.css) { // eslint-disable-line guard-for-in
         self.element.style[prop] = self.options.css[prop];
       }
       // The positioning property has always two parts.
